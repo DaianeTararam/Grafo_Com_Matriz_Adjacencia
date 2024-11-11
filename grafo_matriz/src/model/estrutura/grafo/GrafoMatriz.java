@@ -2,35 +2,53 @@ package model.estrutura.grafo;
 
 import java.util.*;
 
-public class GrafoMatriz<T>{
-	private int [][] matriz;
-	private String[] labels;
+public class GrafoMatriz<T> {
+    // Matriz de adjacência para armazenar conexões entre os nós
+    private int[][] matriz;
+    // Array de rótulos para identificar cada nó
+    private String[] labels;
 
-	public GrafoMatriz(String[] labels){
-		this.labels = labels;
-		this.matriz = new int [labels.length][labels.length];
-	}
+    // Construtor que inicializa a matriz de adjacência e os rótulos dos nós
+    public GrafoMatriz(String[] labels) {
+        this.labels = labels;
+        this.matriz = new int[labels.length][labels.length];
+    }
 
-	public void link(String label1, String label2){
-		int index_label1 = Arrays.asList(this.labels).indexOf(label1);
-		int index_label2 = Arrays.asList(this.labels).indexOf(label2);
-		
-		this.matriz[index_label1][index_label2] = 1;
-		this.matriz[index_label2][index_label1] = 1;
-	}
-	
-	@Override 
-	public String toString(){
-		StringBuilder builder = new StringBuilder();
-		for(int i = 0; i < this.labels.length; i++){
-			builder.append(this.labels[i] + ": ");
-			for(int j = 0; j < this.labels.length; j++){
-				if(this.matriz[i][j] == 1){
-					builder.append(this.labels[j] + " ");
-				}
-			}
-			builder.append("\r\n");
-		}
-		return (builder.toString());
-	}
+    // Método para adicionar uma aresta (conexão) entre dois nós especificados pelos rótulos
+    public void link(String label1, String label2) {
+        int indexLabel1 = Arrays.asList(this.labels).indexOf(label1);
+        int indexLabel2 = Arrays.asList(this.labels).indexOf(label2);
+
+        // Define a conexão como 1 na matriz de adjacência (grafo não-direcionado)
+        this.matriz[indexLabel1][indexLabel2] = 1;
+        this.matriz[indexLabel2][indexLabel1] = 1;
+    }
+
+    // Método para remover uma aresta entre dois nós especificados pelos rótulos
+    public void unlink(String label1, String label2) {
+        int indexLabel1 = Arrays.asList(this.labels).indexOf(label1);
+        int indexLabel2 = Arrays.asList(this.labels).indexOf(label2);
+
+        // Remove a conexão na matriz de adjacência, definindo-a como 0
+        this.matriz[indexLabel1][indexLabel2] = 0;
+        this.matriz[indexLabel2][indexLabel1] = 0;
+    }
+
+    // Método que exibe o grafo como uma string, mostrando cada nó e suas conexões
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        
+        // Percorre cada nó na matriz e exibe suas conexões
+        for (int i = 0; i < this.labels.length; i++) {
+            builder.append(this.labels[i] + ": ");
+            for (int j = 0; j < this.labels.length; j++) {
+                if (this.matriz[i][j] == 1) {
+                    builder.append(this.labels[j] + " ");
+                }
+            }
+            builder.append("\r\n");
+        }
+        return builder.toString();
+    }
 }
